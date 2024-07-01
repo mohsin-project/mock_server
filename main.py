@@ -4,6 +4,7 @@ from multiprocessing import Process
 
 from dotenv import load_dotenv
 from flask import Flask, make_response
+from flask_cors import CORS
 
 load_dotenv()
 import service
@@ -11,6 +12,7 @@ import service
 server: dict = json.load(open(os.environ['SERVER']))
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/', defaults={'path': ''})
