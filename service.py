@@ -7,7 +7,7 @@ from flask import request, make_response
 
 ENDPOINT_NOT_FOUND = "Could not find mocked endpoint"
 
-server: dict = json.load(open('server.json'))
+server: dict = json.load(open(os.environ['SERVER']))
 
 
 def path_parts(path):
