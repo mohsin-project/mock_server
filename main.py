@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 from flask import Flask, make_response
 from flask_cors import CORS
 
+import util
+
 load_dotenv()
 import service
 
@@ -22,8 +24,7 @@ def test_api(path):
 
 
 @app.errorhandler(Exception)
-def handle_foo_exception(error):
-    print(error)
+def handle_exception(error):
     return make_response(str(error), 500)
 
 
@@ -32,9 +33,10 @@ def run_app(port):
 
 
 if __name__ == '__main__':
+    ports = server.keys()
     try:
         processes = []
-        for port in server.keys():
+        for port in ports:
             process = Process(target=run_app, args=(port,))
             process.start()
             processes.append(process)
@@ -43,3 +45,5 @@ if __name__ == '__main__':
             process.join()
     except KeyboardInterrupt:
         pass
+    finally:
+        util.close_ports(ports)
