@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
         for process in processes:
             process.join()
-    except KeyboardInterrupt:
+    except Exception:
         pass
     finally:
         util.close_ports(ports)
