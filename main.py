@@ -11,15 +11,27 @@ import util
 load_dotenv()
 import service
 
-server: dict = json.load(open(os.environ['SERVER']))
+server: dict = json.load(open(os.environ["SERVER"]))
 
 app = Flask(__name__)
 CORS(app)
 
+HTTP_METHODS = [
+    "GET",
+    "HEAD",
+    "POST",
+    "PUT",
+    "DELETE",
+    "CONNECT",
+    "OPTIONS",
+    "TRACE",
+    "PATCH",
+]
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def test_api(path):
+
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>", methods=HTTP_METHODS)
+def api_handler(path):
     return service.handle_request()
 
 
@@ -29,10 +41,10 @@ def handle_exception(error):
 
 
 def run_app(port):
-    app.run(host=os.environ['HOST'], port=port)
+    app.run(host=os.environ["HOST"], port=port)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     ports = server.keys()
     try:
         processes = []
@@ -45,5 +57,5 @@ if __name__ == '__main__':
             process.join()
     except Exception:
         pass
-    finally:
-        util.close_ports(ports)
+
+    util.close_ports(ports)
