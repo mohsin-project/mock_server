@@ -3,7 +3,7 @@ import os
 from multiprocessing import Process
 
 from dotenv import load_dotenv
-from flask import Flask, make_response
+from flask import Flask, request, make_response
 from flask_cors import CORS
 
 import util
@@ -28,6 +28,15 @@ HTTP_METHODS = [
     "PATCH",
 ]
 
+
+@app.before_request
+def intercept_request():
+    print('Request received:')
+    print(f"{request.method} - {request.url}")
+
+    req_body = request.get_json(silent=True) or ""
+    if req_body:
+        print(json.dumps(req_body, indent=4))
 
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>", methods=HTTP_METHODS)
