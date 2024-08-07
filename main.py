@@ -38,6 +38,7 @@ def intercept_request():
     if req_body:
         print(json.dumps(req_body, indent=4))
 
+
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>", methods=HTTP_METHODS)
 def api_handler(path):
